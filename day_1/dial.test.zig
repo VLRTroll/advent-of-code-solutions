@@ -19,15 +19,6 @@ test Dial {
 test "Dial.rotate" {
     var dial = try Dial.create(100, 50);
 
-    try dial.rotate(.{ .direction = Direction.left, .moves = 0 });
-    try std.testing.expectEqual(50, dial.current_position);
-
-    try dial.rotate(.{ .direction = Direction.right, .moves = 0 });
-    try std.testing.expectEqual(50, dial.current_position);
-
-    try dial.rotate(.{ .direction = Direction.right, .moves = 100 });
-    try std.testing.expectEqual(50, dial.current_position);
-
     try dial.rotate(.{ .direction = Direction.left, .moves = 68 });
     try std.testing.expectEqual(82, dial.current_position);
 
@@ -57,6 +48,21 @@ test "Dial.rotate" {
 
     try dial.rotate(.{ .direction = Direction.left, .moves = 82 });
     try std.testing.expectEqual(32, dial.current_position);
+
+    // edge cases
+
+    try dial.rotate(.{ .direction = Direction.left, .moves = dial.current_position });
+
+    try dial.rotate(.{ .direction = Direction.left, .moves = 0 });
+    try std.testing.expectEqual(0, dial.current_position);
+
+    try dial.rotate(.{ .direction = Direction.right, .moves = 0 });
+    try std.testing.expectEqual(0, dial.current_position);
+
+    try dial.rotate(.{ .direction = Direction.right, .moves = 100 });
+    try std.testing.expectEqual(0, dial.current_position);
+
+    // errors
 
     try std.testing.expectError(DialError.InvalidRotaion, dial.rotate(.{ .direction = Direction.right, .moves = -1 }));
 }
@@ -94,10 +100,14 @@ test "Dial.targetTicks" {
     try dial.rotate(.{ .direction = Direction.right, .moves = 14 });
     try std.testing.expectEqual(1, try dial.targetTicks(target_position, .{ .direction = Direction.left, .moves = 82 }));
 
+    // edge cases
+
     try std.testing.expectEqual(0, try dial.targetTicks(dial.current_position, .{ .direction = Direction.left, .moves = 0 }));
     try std.testing.expectEqual(0, try dial.targetTicks(dial.current_position, .{ .direction = Direction.right, .moves = 0 }));
     try std.testing.expectEqual(1, try dial.targetTicks(dial.current_position, .{ .direction = Direction.right, .moves = 100 }));
     try std.testing.expectEqual(2, try dial.targetTicks(dial.current_position, .{ .direction = Direction.right, .moves = 200 }));
+
+    // errors
 
     try std.testing.expectError(DialError.InvalidPosition, dial.targetTicks(-1, .{ .direction = Direction.left, .moves = 0 }));
     try std.testing.expectError(DialError.InvalidPosition, dial.targetTicks(100, .{ .direction = Direction.left, .moves = 0 }));

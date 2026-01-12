@@ -1,3 +1,5 @@
+const math = @import("std").math;
+
 pub const Direction = enum(i32) { left = -1, right = 1 };
 
 pub const Rotation = struct { direction: Direction, moves: i32 };
@@ -42,12 +44,12 @@ pub const Dial = struct {
             return DialError.InvalidRotaion;
         }
 
-        var ticks = @divFloor(rotation.moves, self.size);
-
-        if (self.current_position != target_position) {
-            const movesToTarget = if (rotation.direction == Direction.left) self.current_position else self.size - self.current_position;
-            ticks += @intFromBool(@mod(rotation.moves, self.size) >= movesToTarget);
+        var movesToTarget = @intFromEnum(rotation.direction) * (target_position - self.current_position);
+        if (movesToTarget <= 0) {
+            movesToTarget = self.size + movesToTarget;
         }
+
+        const ticks = @divFloor(rotation.moves, self.size) + @intFromBool(@rem(rotation.moves, self.size) >= movesToTarget);
 
         return ticks;
     }
