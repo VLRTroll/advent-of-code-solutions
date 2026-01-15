@@ -44,10 +44,7 @@ pub const Dial = struct {
             return DialError.InvalidRotaion;
         }
 
-        var movesToTarget = @intFromEnum(rotation.direction) * (target_position - self.current_position);
-        if (movesToTarget <= 0) {
-            movesToTarget = self.size + movesToTarget;
-        }
+        const movesToTarget = @mod(@intFromEnum(rotation.direction) * (target_position - self.current_position) - 1, self.size) + 1;
 
         const ticks = @divFloor(rotation.moves, self.size) + @intFromBool(@rem(rotation.moves, self.size) >= movesToTarget);
 
