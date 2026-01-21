@@ -6,6 +6,7 @@ pub fn initSolutionRegistry(allocator: std.mem.Allocator) !std.AutoHashMap(u8, D
     var registry: std.AutoHashMap(u8, DayRunFn) = .init(allocator);
 
     try registry.put(1, @import("day_1/2025_01.zig").run);
+    try registry.put(2, @import("day_2/2025_02.zig").run);
 
     return registry;
 }
