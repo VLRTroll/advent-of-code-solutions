@@ -11,7 +11,7 @@ A collection of Advent of Code solutions implemented in Zig. Each day's solution
 | Day | Part 1 | Part 2 |
 |-----:|:------:|:------|
 | 1 | <span style="color: yellow;">*</span> | <span style="color: yellow;">*</span> |
-| 2 | | |
+| 2 | <span style="color: yellow;">*</span> | <span style="color: yellow;">*</span> |
 | 3 | | |
 | 4 | | |
 | 5 | | |
