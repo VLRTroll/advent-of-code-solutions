@@ -19,7 +19,7 @@ pub fn run(input_path: string, allocator: std.mem.Allocator) void {
 }
 
 pub fn readBatteryBanks(input: string, allocator: std.mem.Allocator) !std.ArrayList(BatteryBank) {
-    var lines = std.mem.splitAny(u8, input, ",\r\n");
+    var lines = std.mem.splitAny(u8, input, "\r\n");
 
     var battery_banks: std.ArrayList(BatteryBank) = .empty;
 
